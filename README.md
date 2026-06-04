@@ -1,4 +1,4 @@
-# Edge-Computing-System zur Echtzeit-Objekterkennung und mechatronischen Sortierung
+# Edge-Computing-System zur Echtzeit-Objekterkennung und Sortierung von Nudeln
 
 Dieses Repository enthält die vollständige Codebasis für die zwei aufeinander aufbauenden Studienarbeiten (Module T3100 und T3200) im Studiengang Mechatronik an der DHBW Stuttgart. 
 
