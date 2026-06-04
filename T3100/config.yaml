@@ -1,0 +1,11 @@
+path: C:\Users\cnorm\OneDrive\Dokumente\YOLO_Programmierung\Programmierung_Python\data     # dataset root dir
+train: images\train     # train images (relative to 'path')
+val: images\val       # val images (relative to 'path')
+test: images\test
+
+#classes
+names:
+  0: noodle
+  1: broken_noodle
+  2: false_noodle_type_gemelli
+  3: false_noodle_type_pipe_rigate
