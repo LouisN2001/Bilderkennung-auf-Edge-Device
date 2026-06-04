@@ -1,4 +1,4 @@
-path: C:\Users\cnorm\OneDrive\Dokumente\YOLO_Programmierung\Programmierung_Python\data     # dataset root dir
+path: C:\xxx\Programmierung_Python\data     # dataset root dir
 train: images\train     # train images (relative to 'path')
 val: images\val       # val images (relative to 'path')
 test: images\test
