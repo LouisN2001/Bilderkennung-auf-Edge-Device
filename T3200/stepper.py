@@ -1,3 +1,12 @@
+# ==============================================================================
+# Hinweis zur Wiederverwendung von Open-Source-Code:
+# Dieses Skript basiert auf der Arbeit von alecxcode (Aleksandr S.).
+# Original-Repository: https://github.com/alecxcode/stepper
+# Lizenziert unter der MIT-Lizenz.
+#
+# MIT License Copyright (c) 2021 alecxcode
+# ==============================================================================
+
 # Stepper Motors on Raspberry Pi
 from gpiozero import OutputDevice
 from time import time
