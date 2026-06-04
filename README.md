@@ -21,6 +21,9 @@ Die erste Arbeit konzentrierte sich auf den Aufbau des Edge-Devices, die Datenge
 * **`train.py`**
     * Zweck: Training des YOLO-Modells.
     * Funktion: Startet das Training des `yolov8n.pt`-Modells. Es nutzt die Konfiguration aus der `config.yaml`, um das Modell auf die spezifischen Nudelklassen (z. B. intakte/beschädigte Nudeln) über eine variable Anzahl an Epochen hinweg zu trainieren.
+* **`config.yaml`**
+    * Zweck: Datensatz-Konfiguration für das YOLO-Framework.
+    * Funktion: Definiert für den Trainingsalgorithmus die absoluten oder relativen Pfade zu den Trainings-, Validierungs- und Testbildern. Zudem enthält sie die exakte Anzahl der Klassen sowie deren namentliche Zuordnung (z. B. intakte Nudeln, beschädigte Nudeln).
 * **`bild_detector.py`**
     * Zweck: Lokales Hauptprogramm der ersten Projektphase, das auf dem Raspberry Pi läuft.
     * Funktion: Läuft in einer Endlosschleife und wartet auf ein Hardwaresignal via `gpiozero` (Knopfdruck an Pin 17). Nach dem Auslösen wird ein Bild aufgenommen, die lokale KI-Inferenz gestartet und das Ergebnis (Anzahl & Typ der Nudeln) formatiert auf dem per I2C angebundenen OLED-Display ausgegeben.
