@@ -2,8 +2,8 @@ from ultralytics import YOLO
 import os
 import glob
 
-MODEL_PATH = "C:/Users/cnorm/OneDrive/Dokumente/YOLO_Programmierung/Programmierung_Python/YOLOv8-Fliesband/Test1-Fliessband/weights/best.onnx"
-IMAGE_DIR = "C:/Users/cnorm/OneDrive/Dokumente/YOLO_Programmierung/Inferenzzeit_test"
+MODEL_PATH = "C:/xxx/YOLO_Programmierung/YOLOv8-Fliesband/Test1-Fliessband/weights/best.onnx"
+IMAGE_DIR = "C:/xxx/YOLO_Programmierung/Inferenzzeit_test"
 
 # YOLO-Modell Laden
 model = YOLO(MODEL_PATH, task='detect')
