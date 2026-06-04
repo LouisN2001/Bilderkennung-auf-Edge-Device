@@ -10,12 +10,12 @@ from ultralytics import YOLO
 from picamera2 import Picamera2
 from gpiozero import Button
 
-# --- Import OLED ---
+# Import OLED 
 from luma.core.interface.serial import i2c 
 from luma.oled.device import ssd1306
 from PIL import Image, ImageDraw
 
-# --- FLASK Setup ---
+# FLASK Setup
 base_dir = os.path.dirname(os.path.abspath(__file__))
 template_dir = os.path.join(base_dir, 'templates')
 
@@ -25,7 +25,7 @@ DASHBOARD_PASSWORD = "nudel"
 last_events = []    # Liste für die Web-Anzeige
 latest_frame = None # Globaler Buffer für Video-Stream
 
-# --- CONFIG ---
+# CONFIG 
 MODEL_PATH = "best.onnx"
 IMAGE_SIZE = (320, 240) # Größe für die KI (muss klein bleiben für Speed)
 DISPLAY_SIZE = (1280, 960) # Größe für das Fenster (hier kannst du variieren)
@@ -35,39 +35,24 @@ CONF_LEVEL = 0.25
 MIN_CONF_LOGIK = 0.8
 BUTTON_PIN = 21 #GPIO-Pin 21
 
-# --- OLED initialisieren ---
+# OLED initialisieren
 serial = i2c(port=1, address=0x3C)
 oled = ssd1306(serial, width=128, height=32)
 
 def oled_update_display(counts):
-    """ Erstellt eine Tabelle mit 4 Spalten und zentriertem Text """
     image = Image.new("1", (oled.width, oled.height))
     draw = ImageDraw.Draw(image)
-    
-    # 1. Spalten-Definition (Mittelpunkte der 4 Spalten bei 128px Breite)
-    # Spalte 1: 0-31 (Mitte 16), Spalte 2: 32-63 (Mitte 48), usw.
     col_centers = [16, 48, 80, 112]
-    
-    # 2. Header und zugehörige Werte definieren
     headers = ["Norm", "Brok", "Gem", "Pipe"]
     values = [str(counts["0"]), str(counts["1"]), str(counts["2"]), str(counts["3"])]
     
     for i in range(4):
-        # Text-Breite berechnen, um ihn mittig zu platzieren
-        # (Standard-Schriftart ist ca. 6 Pixel breit pro Zeichen)
         header_text = headers[i]
         value_text = values[i]
-        
-        # Header zentrieren (Obere Zeile y=0)
-        # Wir nutzen anchor="mt" (Middle-Top), falls Pillow aktuell ist, 
-        # sonst berechnen wir die x-Position manuell:
         w_h = draw.textlength(header_text) if hasattr(draw, 'textlength') else len(header_text) * 6
         draw.text((col_centers[i] - w_h/2, 0), header_text, fill=255)
-        
-        # Zahlen zentrieren (Untere Zeile y=16)
         w_v = draw.textlength(value_text) if hasattr(draw, 'textlength') else len(value_text) * 6
         draw.text((col_centers[i] - w_v/2, 16), value_text, fill=255)
-    
     oled.display(image)
     
 def oled_clear():
@@ -75,13 +60,11 @@ def oled_clear():
     oled.display(image)
 
 def trigger_shutdown():
-    """ Sendet ein SIGINT (entspricht Strg+C) an den aktuellen Prozess """
     os.kill(os.getpid(), signal.SIGINT)
 
 def motor_ablauf_thread(cls_id): # NEU: Eigene Funktion für den Thread
     global motor_laeuft, schranke_offen, nudel_in_verarbeitung
     
-    # 1s weiterfahren, Stopp, Schranke (dein bisheriger Ablauf)
     time.sleep(1) # Blockiert jetzt nur diesen Thread, nicht den Stream
     motor_laeuft = False
     
@@ -101,13 +84,13 @@ def motor_ablauf_thread(cls_id): # NEU: Eigene Funktion für den Thread
     motor_laeuft = True
     # Warten, bis die Nudel sicher aus dem Sichtfeld ist, dann wieder freigeben
     time.sleep(2) 
-    nudel_in_verarbeitung = False # NEU: Erst hier wieder auf False setzen
+    nudel_in_verarbeitung = False
 
-# --- Button initialisieren ---
+# Button initialisieren 
 button = Button(BUTTON_PIN)
 button.when_pressed = trigger_shutdown
 
-# --- Zähler initialisieren ---
+# Zähler initialisieren 
 class_counts = {
     "0": 0, # noodle
     "1": 0, # broken_noodle
@@ -119,7 +102,7 @@ class_counts = {
 if not os.path.exists('static/captures'):
     os.makedirs('static/captures')
 
-# --- MOTOREN ---
+# MOTOREN 
 # Fliessband initialisieren
 motor = Stepper(2048, 5, 6, 13, 19)
 motor.set_speed(MOTOR_SPEED)
@@ -254,17 +237,17 @@ def main_loop():
             label = model.names[cls_id]
             conf = float(box.conf[0])
 
-            # Zaehler hochzählen
+            # Zähler hochzählen
             class_counts[str(cls_id)] += 1
 
-            #oled update bei erkennung
+            # oled update bei erkennung
             oled_update_display(class_counts)
 
             # Event für Web-App speichern
             timestamp = datetime.datetime.now().strftime("%H:%M:%S")
             last_events.append({"time": timestamp, "label": label, "conf": round(conf*100, 1)})
 
-            # 1s weiterfahren, Stopp, Schranke (dein Ablauf)
+            # 1s weiterfahren, Stopp, Schranke
             threading.Thread(target=motor_ablauf_thread, args=(cls_id,), daemon=True).start()
             
 
@@ -274,7 +257,7 @@ def main_loop():
 
     picam2.stop()
 
-# --- START ---
+# START 
 if __name__ == '__main__':
     try:
         # 1. Fließband-Thread
@@ -287,14 +270,14 @@ if __name__ == '__main__':
         print(f"[Web] Dashboard erreichbar unter http://127.0.0.1:5000 und extern via Cloudfare")
         app.run(host='127.0.0.1', port=5000, debug=False, threaded=True)
 
-    # neu: Sauberer Abbruch bei CTRL+C, um Motoren zu stoppen
+    # Sauberer Abbruch bei CTRL+C, um Motoren zu stoppen
     except KeyboardInterrupt:
         print("\n[System] Abbruch durch Benutzer...")
     finally:
         band_aktiv = False
         motor_laeuft = False
         time.sleep(0.5)
-        # neu: Falls die Schranke während des Abbruchs noch offen war, zufahren
+        # Falls die Schranke während des Abbruchs noch offen war, zufahren
         if schranke_offen:
             schranke.step(-256)
         motor.stop()
