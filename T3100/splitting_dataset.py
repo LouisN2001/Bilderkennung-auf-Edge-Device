@@ -4,7 +4,7 @@ import shutil
 
 ROH_BILDER_PFAD = r"E:\test_new_fl"
 ROH_LABELS_PFAD = r"E:\test_new_labels_fl"
-DATASET_OUTPUT_PFAD = r"C:\Users\cnorm\OneDrive\Dokumente\YOLO_Programmierung\neue_Bilder_Fliessband"
+DATASET_OUTPUT_PFAD = r"C:\xxx\YOLO_Programmierung\Bilder"
 
 def split_dataset(images_dir, labels_dir, output_dir, test_size=0.2, val_size=0.2):
     images = [f for f in os.listdir(images_dir) if f.endswith('.jpg')]
