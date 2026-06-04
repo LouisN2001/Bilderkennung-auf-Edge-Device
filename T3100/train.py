@@ -5,7 +5,7 @@ import os
 
 if __name__ == '__main__':
     # Basis-Pfade
-    BASE_PATH = "C:/Users/cnorm/OneDrive/Dokumente/YOLO_Programmierung/Programmierung_Python"
+    BASE_PATH = "C:/xxx/YOLO_Programmierung/Programmierung_Python"
     DATA_PATH = os.path.join(BASE_PATH, "data").replace("\\", "/")
     CONFIG_PATH = os.path.join(BASE_PATH, "config.yaml").replace("\\", "/")
     TRAIN_FOLDER = os.path.join(DATA_PATH, "images/train").replace("\\", "/")
