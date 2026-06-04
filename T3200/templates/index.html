@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nudel-Sortierer Dashboard</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Nudel-Sortierer">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2718/2718224.png">
+    <style>
+        /* --- ALLGEMEINES STYLING --- */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background: #121212; 
+            color: #e0e0e0; 
+            margin: 0; 
+            padding: 20px; 
+        }
+        .header { 
+            background: #1f1f1f; 
+            padding: 15px; 
+            border-radius: 10px; 
+            margin-bottom: 25px; 
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            border: 1px solid #333;
+        }
+
+        /* --- ZÄHLER-SEKTION --- */
+        .stats-container { 
+            display: flex; 
+            gap: 15px; 
+            margin-bottom: 25px; 
+            justify-content: center; 
+            flex-wrap: wrap; 
+        }
+        .stat-card { 
+            background: #1f1f1f; 
+            padding: 20px; 
+            border-radius: 12px; 
+            min-width: 160px; 
+            text-align: center; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            border-bottom: 5px solid #444;
+            transition: transform 0.2s;
+        }
+        .stat-card:hover { transform: translateY(-5px); }
+        .stat-card h3 { margin: 0; font-size: 0.85em; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+        .stat-card div { font-size: 2.5em; font-weight: bold; margin-top: 8px; color: #fff; }
+        
+        /* Farben für die verschiedenen Klassen */
+        .card-0 { border-color: #4caf50; } /* Noodle - Grün */
+        .card-1 { border-color: #f44336; } /* Broken - Rot */
+        .card-2 { border-color: #ff9800; } /* Gemelli - Orange */
+        .card-3 { border-color: #9c27b0; } /* Pipe Rigatte - Lila */
+
+        /* --- HAUPTBEREICH --- */
+        .main-grid { 
+            display: grid; 
+            grid-template-columns: 2fr 1fr; 
+            gap: 20px; 
+        }
+        @media (max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
+
+        .box { 
+            background: #1f1f1f; 
+            padding: 20px; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            border: 1px solid #333;
+        }
+        .video-box img { 
+            width: 100%; 
+            border-radius: 8px; 
+            border: 2px solid #333;
+            background: #000;
+        }
+        
+        /* --- LOG-LISTE --- */
+        .log-box { max-height: 600px; overflow-y: auto; }
+        #event-list { list-style: none; padding: 0; margin: 0; }
+        .event-item { 
+            background: #2a2a2a; 
+            margin-bottom: 10px; 
+            padding: 12px; 
+            border-left: 5px solid #4caf50; 
+            border-radius: 4px; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideIn 0.3s ease-out;
+        }
+        .event-item.bad { border-left-color: #f44336; }
+        .event-time { font-family: monospace; color: #888; font-size: 0.9em; }
+        .event-label { font-weight: bold; text-transform: capitalize; }
+        .event-conf { font-size: 0.85em; background: #444; padding: 2px 6px; border-radius: 4px; }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Nudel-Sortieranlage <span style="color: #4caf50;">Live Dashboard</span></h1>
+    </div>
+
+    <div class="stats-container">
+        <div class="stat-card card-0">
+            <h3>Normal Noodle</h3>
+            <div id="cnt-0">0</div>
+        </div>
+        <div class="stat-card card-1">
+            <h3>Broken</h3>
+            <div id="cnt-1">0</div>
+        </div>
+        <div class="stat-card card-2">
+            <h3>Gemelli</h3>
+            <div id="cnt-2">0</div>
+        </div>
+        <div class="stat-card card-3">
+            <h3>Pipe Rigatte</h3>
+            <div id="cnt-3">0</div>
+        </div>
+    </div>
+
+    <div class="main-grid">
+        <div class="box video-box">
+            <h2 style="margin-top:0;">KI-Analyse (Live)</h2>
+            <img src="/video_feed" alt="Warte auf Kamera-Stream...">
+        </div>
+
+        <div class="box log-box">
+            <h2 style="margin-top:0;">Letzte Erkennungen</h2>
+            <div id="event-list">
+                <p style="color: #666;">Warte auf Daten...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateDashboard() {
+            fetch('/api/events')
+                .then(response => response.json())
+                .then(data => {
+                    // 1. Zähler aktualisieren
+                    document.getElementById('cnt-0').textContent = data.counts["0"] || 0;
+                    document.getElementById('cnt-1').textContent = data.counts["1"] || 0;
+                    document.getElementById('cnt-2').textContent = data.counts["2"] || 0;
+                    document.getElementById('cnt-3').textContent = data.counts["3"] || 0;
+
+                    // 2. Ereignisliste aktualisieren
+                    const listContainer = document.getElementById('event-list');
+                    if (data.events.length > 0) {
+                        listContainer.innerHTML = '';
+                        // Wir zeigen die neuesten Events oben an (reverse)
+                        data.events.slice().reverse().forEach(ev => {
+                            const item = document.createElement('div');
+                            item.className = 'event-item' + (ev.label !== 'noodle' ? ' bad' : '');
+                            
+                            item.innerHTML = `
+                                <div>
+                                    <span class="event-time">${ev.time}</span><br>
+                                    <span class="event-label">${ev.label.replace(/_/g, ' ')}</span>
+                                </div>
+                                <div class="event-conf">${ev.conf}%</div>
+                            `;
+                            listContainer.appendChild(item);
+                        });
+                    }
+                })
+                .catch(err => console.error("Dashboard Update Fehler:", err));
+        }
+
+        // Alle 1.5 Sekunden aktualisieren
+        setInterval(updateDashboard, 1500);
+    </script>
+</body>
+</html>
