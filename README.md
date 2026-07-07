@@ -74,4 +74,4 @@ Hier ist der fertige Aufbau des Demonstrators abgebildet.
 * **Schrittmotor-Ansteuerung (`stepper.py`):** Die grundlegende Logik zur Ansteuerung des Schrittmotors über die ULN2003A-Treiberplatine basiert auf dem Open-Source-Repository [stepper](https://github.com/alecxcode/stepper) von alecxcode. Der Code wurde unter den Bedingungen der MIT-Lizenz wiederverwendet.
 
 
-[Bei Fragen, schreibt mir gerne eine Mail.](mailto:mt23011@lehre.dhbw-stuttgart.de)
+[Bei Fragen, schreibt mir gerne eine Mail: mt23011@lehre.dhbw-stuttgart.de](mailto:mt23011@lehre.dhbw-stuttgart.de)
