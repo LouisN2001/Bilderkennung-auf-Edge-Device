@@ -25,7 +25,7 @@ DASHBOARD_PASSWORD = "nudel"
 last_events = []    # Liste für die Web-Anzeige
 latest_frame = None # Globaler Buffer für Video-Stream
 
-# CONFIG 
+# Configuration 
 MODEL_PATH = "best.onnx"
 IMAGE_SIZE = (320, 240) # Größe für die KI (muss klein bleiben für Speed)
 DISPLAY_SIZE = (1280, 960) # Größe für das Fenster (hier kannst du variieren)
@@ -102,7 +102,7 @@ class_counts = {
 if not os.path.exists('static/captures'):
     os.makedirs('static/captures')
 
-# MOTOREN 
+# Motoren 
 # Fliessband initialisieren
 motor = Stepper(2048, 5, 6, 13, 19)
 motor.set_speed(MOTOR_SPEED)
@@ -117,6 +117,7 @@ motor_laeuft = True             # Steuert, ob der Motor sich gerade dreht
 schranke_offen = False          # Trackt Position für den Abbruch
 nudel_in_verarbeitung = False   # Verhindert, dass eine Nudel mehrfach triggert
 
+# Webapp
 @app.before_request # Prüft vor jeder Anfrage, ob Nutzer bereits eingeloggt ist
 def check_login():
     # Erlaube Zugriff auf die Login-Seite und das Manifest ohne Login
@@ -193,22 +194,17 @@ def main_loop():
 
     oled_update_display(class_counts)
 
-    print("[System] Starte KI und Kamera...")
-
     while band_aktiv:
         frame_rgb = picam2.capture_array()
         frame = cv2.cvtColor(frame_rgb, cv2.COLOR_RGB2BGR)
         results = model.predict(frame, conf=0.25, verbose=False)
 
-        # Inferenzzeit auslesen und drucken 
+        # Inferenzzeit auslesen 
         inference_time = results[0].speed['inference'] 
-        print(f"Inferenzzeit: {inference_time:.2f} ms")
         
         display_frame = frame.copy()
         detections = results[0].boxes
         valid_detections = [box for box in detections if float(box.conf[0]) > MIN_CONF_LOGIK]
-
-    
 
         # Zeichnen der Boxen für Web-Stream    
         for box in detections:
@@ -240,7 +236,7 @@ def main_loop():
             # Zähler hochzählen
             class_counts[str(cls_id)] += 1
 
-            # oled update bei erkennung
+            # OLED-Display updaten bei erkennung
             oled_update_display(class_counts)
 
             # Event für Web-App speichern
@@ -250,14 +246,12 @@ def main_loop():
             # 1s weiterfahren, Stopp, Schranke
             threading.Thread(target=motor_ablauf_thread, args=(cls_id,), daemon=True).start()
             
-
-        
         # Frame für den Web-Stream aktualisieren
         latest_frame = display_frame
 
     picam2.stop()
 
-# START 
+# Start 
 if __name__ == '__main__':
     try:
         # 1. Fließband-Thread
