@@ -10,7 +10,7 @@
 <link rel="manifest" href="/manifest.json">
 <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2718/2718224.png">
     <style>
-        /* --- ALLGEMEINES STYLING --- */
+        /* Allgemeiner Style */
         body { 
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             background: #121212; 
@@ -28,7 +28,7 @@
             border: 1px solid #333;
         }
 
-        /* --- ZÄHLER-SEKTION --- */
+        /* Zähler-Teil */
         .stats-container { 
             display: flex; 
             gap: 15px; 
@@ -56,7 +56,7 @@
         .card-2 { border-color: #ff9800; } /* Gemelli - Orange */
         .card-3 { border-color: #9c27b0; } /* Pipe Rigatte - Lila */
 
-        /* --- HAUPTBEREICH --- */
+        /* Hauptteil */
         .main-grid { 
             display: grid; 
             grid-template-columns: 2fr 1fr; 
@@ -78,7 +78,7 @@
             background: #000;
         }
         
-        /* --- LOG-LISTE --- */
+        /* Log-Liste */
         .log-box { max-height: 600px; overflow-y: auto; }
         #event-list { list-style: none; padding: 0; margin: 0; }
         .event-item { 
@@ -147,13 +147,13 @@
             fetch('/api/events')
                 .then(response => response.json())
                 .then(data => {
-                    // 1. Zähler aktualisieren
+                    /* Zähler aktualisieren */
                     document.getElementById('cnt-0').textContent = data.counts["0"] || 0;
                     document.getElementById('cnt-1').textContent = data.counts["1"] || 0;
                     document.getElementById('cnt-2').textContent = data.counts["2"] || 0;
                     document.getElementById('cnt-3').textContent = data.counts["3"] || 0;
 
-                    // 2. Ereignisliste aktualisieren
+                    /* Ereignisliste aktualisieren */
                     const listContainer = document.getElementById('event-list');
                     if (data.events.length > 0) {
                         listContainer.innerHTML = '';
@@ -176,7 +176,7 @@
                 .catch(err => console.error("Dashboard Update Fehler:", err));
         }
 
-        // Alle 1.5 Sekunden aktualisieren
+        /* Alle 1.5 Sekunden aktualisieren */
         setInterval(updateDashboard, 1500);
     </script>
 </body>
