@@ -10,6 +10,10 @@ Das Gesamtziel des Projekts war die Entwicklung eines kostengünstigen, lokalen 
 
 Die erste Arbeit konzentrierte sich auf den Aufbau des Edge-Devices, die Datengenerierung sowie das Training und die lokale Implementierung des Objekterkennungsmodells YOLOv8. Die Auslösung der Kamera und die Ausgabe der Erkennungsergebnisse erfolgten hier noch rein hardwarebasiert über Taster und OLED-Display.
 
+Hier ist der fertige Aufbau des Demonstrators abgebildet.
+<img width="939" height="446" alt="image" src="https://github.com/user-attachments/assets/36a11b4a-9676-44ce-a5d3-77a6f0aa9298" />
+
+
 ### Enthaltene Skripte & Funktionen:
 
 * **`Bilder_Aufnehmen.py`**
@@ -33,6 +37,13 @@ Die erste Arbeit konzentrierte sich auf den Aufbau des Edge-Devices, die Datenge
 ## T3200: Mechatronisches Sortiersystem (Erweiterung zum Demonstrator)
 
 Die zweite Arbeit entwickelt das Erkennungssystem weiter. Es wurde ein fischertechnik-Förderband integriert, die Erkennung auf kontinuierlichen Bandbetrieb optimiert und ein webbasiertes Benutzer-Dashboard implementiert.
+
+Hier ist der fertige Aufbau des Demonstrators abgebildet. 
+<img width="827" height="932" alt="image" src="https://github.com/user-attachments/assets/01595708-f150-455a-a925-f72d1ddabb4d" />
+(1) Kamerasystem
+(2) Sortiermechanismus
+(3) Förderbandsystem
+
 
 ### Enthaltene Skripte & Funktionen:
 
