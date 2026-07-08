@@ -72,6 +72,6 @@ Hier ist der fertige Aufbau des Demonstrators abgebildet.
 ##  Quellen
 
 * **Schrittmotor-Ansteuerung (`stepper.py`):** Die grundlegende Logik zur Ansteuerung des Schrittmotors über die ULN2003A-Treiberplatine basiert auf dem Open-Source-Repository [stepper](https://github.com/alecxcode/stepper) von alecxcode. Der Code wurde unter den Bedingungen der MIT-Lizenz wiederverwendet.
-
+* **Datensatz-Aufteilung (`splitting_dataset.py`):** Die Logik zur automatischen Aufteilung der Bilddaten in Trainings-, Validierungs- und Testdaten (Train-Test-Split) wurde aus dem Praxis-Leitfaden [„Fine-Tuning YOLOv8: A Practical Guide“](https://medium.com/@amityadav.91297/fine-tuning-yolov8-a-practical-guide-b79e830ee774) von Amit Yadav (Medium) übernommen und für die Ordnerstruktur dieses Projekts modifiziert.
 
 Bei Fragen schreibt mir gerne in der Rubrik "Discussions" an. Dort werde ich versuchen, eure Fragen zu beantworten.
