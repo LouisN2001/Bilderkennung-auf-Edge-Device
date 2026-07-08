@@ -1,3 +1,15 @@
+# ==============================================================================
+# HINWEIS ZUR QUELLE / SOURCE CODE NOTICE
+# ==============================================================================
+# Dieser Codeabschnitt wurde nicht von mir selbst verfasst.
+# Er stammt aus folgendem Blog und wurde für diese Studienarbeit verwendet:
+# 
+# Autor: Amit Yadav
+# Blog-Post: "Fine-Tuning YOLOv8: A Practical Guide"
+# URL: https://medium.com/@amit25173/fine-tuning-yolov8-a-practical-guide-61343dada5c1
+# Abgerufen am: 08.07.2026
+# ==============================================================================
+
 from sklearn.model_selection import train_test_split
 import os
 import shutil
