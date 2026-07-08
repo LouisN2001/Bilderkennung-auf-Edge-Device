@@ -1,0 +1,10 @@
+picamera2
+libcamera
+ultralytics
+gpiozero
+luma.oled
+pillow
+scikit-learn
+torch
+Flask
+opencv-python
